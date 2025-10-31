@@ -24,27 +24,27 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **kill**: Kills a process by its PID, with confirmation and an option for SIGKILL.
 
-**explain-perm**: Explains a filesystem permission error and suggests a fix using AI.
+**perfix**: Explains a filesystem permission error and suggests a fix using AI.
 
 **pkg-install**: Gets AI advice on installing a software package and can optionally attempt installation using apt.
 
-**run-script**: Executes a script, with an option for AI to predict its runtime behavior and side-effects beforehand.
+**run**: Executes a script, with an option for AI to predict its runtime behavior and side-effects beforehand.
 
 **find-nl**: Finds files or directories using a natural language description, generating and executing a find command.
 
-**diag-network**: Runs basic network diagnostics (ping, curl) and gets AI-powered advice based on the output.
+**net**: Runs basic network diagnostics (ping, curl) and gets AI-powered advice based on the output.
 
-**env-suggest**: Suggests environment variables needed for an application or task based on context provided in natural language.
+**envhint**: Suggests environment variables needed for an application or task based on context provided in natural language.
 
 **git**: Generates a conventional commit message for staged Git changes using AI.
 
-**sys-report**: Generates a system report (uname, disk usage, memory) and provides AI-powered advice.
+**sysinfo**: Generates a system report (uname, disk usage, memory) and provides AI-powered advice.
 
 **compress**: Compresses files/directories using tar, with an option to ask AI for the best compression approach.
 
 **schedule**: Creates a cron job from a natural language description and can optionally install it for the current user.
 
-**admin-check**: Analyzes a potentially dangerous command with AI before running it with sudo.
+**sudo**: Analyzes a potentially dangerous command with AI before running it with sudo.
 
 **ask**: Translates a natural language instruction into a shell command using AI, with an option to execute the generated command(s) after confirmation.
 

@@ -276,7 +276,7 @@ def cmd_kill(pid, sig, yes):
         sys.exit(1)
 
 
-@cli.command("explain-perm")
+@cli.command("perfix")
 @click.argument("error_text", type=str)
 def cmd_explain_perm(error_text):
     """Explains a filesystem permission error and suggests a fix using AI."""
@@ -323,7 +323,7 @@ def cmd_pkg_install(pkg):
         sys.exit(1)
 
 
-@cli.command("run-script")
+@cli.command("run")
 @click.argument("script_path", type=click.Path(exists=True))
 @click.option("--predict", is_flag=True, help="Ask AI to predict runtime/side-effects before running")
 @click.option("--yes", is_flag=True, help="Run without confirmation")
@@ -390,7 +390,7 @@ def cmd_find_nl(intent, root, yes):
         sys.exit(1)
 
 
-@cli.command("diag-network")
+@cli.command("net")
 @click.option("--target", "-t", required=True, help="Host or URL")
 def cmd_diag_network(target):
     """Runs basic network diagnostics and gets AI-powered advice."""
@@ -426,7 +426,7 @@ def cmd_diag_network(target):
         sys.exit(1)
 
 
-@cli.command("env-suggest")
+@cli.command("envhint")
 @click.argument("context", type=str)
 def cmd_env_suggest(context):
     """Suggests environment variables needed for an application or task."""
@@ -469,7 +469,7 @@ def cmd_git_msg():
         sys.exit(1)
 
 
-@cli.command("sys-report")
+@cli.command("sysinfo")
 def cmd_sys_report():
     """Generates a system report and provides AI-powered advice."""
     uname_out, df_out, free_out = "", "", ""
@@ -581,7 +581,7 @@ def cmd_cron_from_nl(nl):
         sys.exit(1)
 
 
-@cli.command("admin-check")
+@cli.command("sudo")
 @click.argument("command", type=str)
 def cmd_admin_check(command):
     """Analyzes a potentially dangerous command with AI before running it with sudo."""

@@ -308,7 +308,7 @@ def test_kill_command_aborted(runner, mock_run_cmd):
 
 def test_explain_perm_command_success(runner, mock_ai_prompts):
     mock_ai_prompts['ai_explain_permission_error'].return_value = "AI explanation of error."
-    result = runner.invoke(cli, ["explain-perm", "Permission denied: /path/to/file"])
+    result = runner.invoke(cli, ["perfix", "Permission denied: /path/to/file"])
     assert result.exit_code == 0
     assert "AI explanation of error." in result.output
     mock_ai_prompts['ai_explain_permission_error'].assert_called_once()
@@ -340,7 +340,7 @@ def test_run_script_command_no_predict(runner, tmp_path, mock_run_cmd):
     script_file.write_text("echo 'hello from script'")
     mock_run_cmd.return_value = (0, "hello from script\n", "")
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["run-script", str(script_file)])
+        result = runner.invoke(cli, ["run", str(script_file)])
         assert result.exit_code == 0
         assert "Script executed successfully." in result.output
         mock_run_cmd.assert_called_once_with(f"bash '{str(script_file)}'", capture=False)
@@ -351,7 +351,7 @@ def test_run_script_command_predict_and_run(runner, tmp_path, mock_run_cmd, mock
     mock_ai_prompts['ai_predict_script'].return_value = "AI predicted output."
     mock_run_cmd.return_value = (0, "hello from script\n", "")
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["run-script", str(script_file), "--predict"])
+        result = runner.invoke(cli, ["run", str(script_file), "--predict"])
         assert result.exit_code == 0
         assert "--- AI Prediction ---" in result.output
         assert "AI predicted output." in result.output
@@ -363,7 +363,7 @@ def test_run_script_command_yes_flag(runner, tmp_path, mock_run_cmd):
     script_file = tmp_path / "script.sh"
     script_file.write_text("echo 'hello from script'")
     mock_run_cmd.return_value = (0, "hello from script\n", "")
-    result = runner.invoke(cli, ["run-script", str(script_file), "--yes"])
+    result = runner.invoke(cli, ["run", str(script_file), "--yes"])
     assert result.exit_code == 0
     assert "Script executed successfully." in result.output
     mock_run_cmd.assert_called_once_with(f"bash '{str(script_file)}'", capture=False)
@@ -389,7 +389,7 @@ def test_diag_network_command_success(runner, mock_run_cmd, mock_ai_prompts):
         (0, "HTTP/1.1 200 OK", ""), # curl
     ]
     mock_ai_prompts['ai_network_diagnostic'].return_value = "Network seems fine."
-    result = runner.invoke(cli, ["diag-network", "-t", "example.com"])
+    result = runner.invoke(cli, ["net", "-t", "example.com"])
     assert result.exit_code == 0
     assert "--- ping ---" in result.output
     assert "Ping successful" in result.output
@@ -405,7 +405,7 @@ def test_diag_network_command_ping_fail_curl_success(runner, mock_run_cmd, mock_
         (0, "HTTP/1.1 200 OK", ""), # curl
     ]
     mock_ai_prompts['ai_network_diagnostic'].return_value = "Ping failed, but curl worked."
-    result = runner.invoke(cli, ["diag-network", "-t", "example.com"])
+    result = runner.invoke(cli, ["net", "-t", "example.com"])
     assert result.exit_code == 0
     assert "Error: Ping failed" in result.output
     assert "HTTP/1.1 200 OK" in result.output
@@ -413,7 +413,7 @@ def test_diag_network_command_ping_fail_curl_success(runner, mock_run_cmd, mock_
 
 def test_env_suggest_command_success(runner, mock_ai_prompts):
     mock_ai_prompts['ai_env_suggestion'].return_value = "export DB_HOST=localhost"
-    result = runner.invoke(cli, ["env-suggest", "database connection"])
+    result = runner.invoke(cli, ["envhint", "database connection"])
     assert result.exit_code == 0
     assert "export DB_HOST=localhost" in result.output
     mock_ai_prompts['ai_env_suggestion'].assert_called_once()
@@ -442,7 +442,7 @@ def test_sys_report_command_success(runner, mock_run_cmd, mock_ai_prompts):
         (0, "total used free ...", ""), # free
     ]
     mock_ai_prompts['ai_system_advice'].return_value = "System looks healthy."
-    result = runner.invoke(cli, ["sys-report"])
+    result = runner.invoke(cli, ["sysinfo"])
     assert result.exit_code == 0
     assert "Linux hostname ..." in result.output
     assert "Filesystem Size Used Avail Use%" in result.output
@@ -458,7 +458,7 @@ def test_sys_report_command_partial_success(runner, mock_run_cmd, mock_ai_prompt
         (0, "total used free ...", ""), # free success
     ]
     mock_ai_prompts['ai_system_advice'].return_value = "Partial report advice."
-    result = runner.invoke(cli, ["sys-report"])
+    result = runner.invoke(cli, ["sysinfo"])
     assert result.exit_code == 0
     assert "Warning: Could not get df information." in result.output
     assert "Partial report advice." in result.output
@@ -538,7 +538,7 @@ def test_admin_check_command_success(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_dryrun_check'].return_value = "This command will remove files."
     mock_run_cmd.return_value = (0, "", "") # sudo command success
     with patch('click.confirm', side_effect=[True, True]): # confirm analysis, then confirm execution
-        result = runner.invoke(cli, ["admin-check", "rm -rf /tmp/test"])
+        result = runner.invoke(cli, ["sudo", "rm -rf /tmp/test"])
         assert result.exit_code == 0
         assert "--- AI Analysis ---" in result.output
         assert "This command will remove files." in result.output
@@ -549,7 +549,7 @@ def test_admin_check_command_success(runner, mock_ai_prompts, mock_run_cmd):
 def test_admin_check_command_no_ai_analysis_aborted(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_dryrun_check'].return_value = None
     with patch('click.confirm', side_effect=[False]): # Abort after no AI analysis
-        result = runner.invoke(cli, ["admin-check", "rm -rf /tmp/test"])
+        result = runner.invoke(cli, ["sudo", "rm -rf /tmp/test"])
         assert result.exit_code == 0
         assert "Warning: AI could not provide an analysis" in result.output
         assert "Aborted." in result.output
@@ -559,7 +559,7 @@ def test_admin_check_command_no_ai_analysis_run_anyway(runner, mock_ai_prompts, 
     mock_ai_prompts['ai_dryrun_check'].return_value = None
     mock_run_cmd.return_value = (0, "", "")
     with patch('click.confirm', side_effect=[True, True]): # Continue after no AI analysis, then run
-        result = runner.invoke(cli, ["admin-check", "rm -rf /tmp/test"])
+        result = runner.invoke(cli, ["sudo", "rm -rf /tmp/test"])
         assert result.exit_code == 0
         assert "Warning: AI could not provide an analysis" in result.output
         assert "Command executed with sudo successfully." in result.output
