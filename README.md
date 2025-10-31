@@ -46,7 +46,8 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **admin-check**: Analyzes a potentially dangerous command with AI before running it with sudo.
 
-**smart**: Translates a natural language instruction into a shell command using AI, with an option to execute the generated command(s) after confirmation.
+**ask**: Translates a natural language instruction into a shell command using AI, with an option to execute the generated command(s) after confirmation.
 
 This CLI aims to enhance terminal productivity by integrating AI for understanding natural language, providing explanations, generating commands, and offering proactive advice.
+
 # ChalBe

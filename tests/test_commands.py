@@ -567,7 +567,7 @@ def test_admin_check_command_no_ai_analysis_run_anyway(runner, mock_ai_prompts, 
 
 def test_smart_command_success(runner, mock_ai_prompts):
     mock_ai_prompts['ai_nl_to_shell'].return_value = "ls -la\necho 'Done'"
-    result = runner.invoke(cli, ["smart", "list all files and say done"])
+    result = runner.invoke(cli, ["ask", "list all files and say done"])
     assert result.exit_code == 0
     assert "--- Generated Commands ---" in result.output
     assert "ls -la" in result.output
@@ -578,7 +578,7 @@ def test_smart_command_execute_success(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_nl_to_shell'].return_value = "ls -la\necho 'Done'"
     mock_run_cmd.side_effect = [(0, "", ""), (0, "", "")] # Both commands succeed
     with patch('click.confirm', side_effect=[True, True]): # Confirm both commands
-        result = runner.invoke(cli, ["smart", "list and done", "--execute"])
+        result = runner.invoke(cli, ["ask", "list and done", "--execute"])
         assert result.exit_code == 0
         assert "Command 'ls -la' executed successfully." in result.output
         assert "Command 'echo 'Done'' executed successfully." in result.output
@@ -590,7 +590,7 @@ def test_smart_command_execute_one_aborted(runner, mock_ai_prompts, mock_run_cmd
     mock_ai_prompts['ai_nl_to_shell'].return_value = "ls -la\necho 'Done'"
     mock_run_cmd.side_effect = [(0, "", "")] # Only the first command runs
     with patch('click.confirm', side_effect=[True, False]): # Confirm first, abort second
-        result = runner.invoke(cli, ["smart", "list and done", "--execute"])
+        result = runner.invoke(cli, ["ask", "list and done", "--execute"])
         assert result.exit_code == 0
         assert "Command 'ls -la' executed successfully." in result.output
         assert "Skipping command: echo 'Done'" in result.output
@@ -598,7 +598,7 @@ def test_smart_command_execute_one_aborted(runner, mock_ai_prompts, mock_run_cmd
 
 def test_smart_command_no_shell_output(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_nl_to_shell'].return_value = ""
-    result = runner.invoke(cli, ["smart", "invalid command", "--execute"])
+    result = runner.invoke(cli, ["ask", "invalid command", "--execute"])
     assert result.exit_code == 0
     assert "Error: AI could not generate any shell commands." in result.output
     mock_run_cmd.assert_not_called()
@@ -607,7 +607,7 @@ def test_smart_command_empty_or_comment_lines(runner, mock_ai_prompts, mock_run_
     mock_ai_prompts['ai_nl_to_shell'].return_value = "\n# This is a comment\n\nls -l\n"
     mock_run_cmd.return_value = (0, "", "")
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["smart", "just list", "--execute"])
+        result = runner.invoke(cli, ["ask", "just list", "--execute"])
         assert result.exit_code == 0
         assert "Command 'ls -l' executed successfully." in result.output
         # Ensure only 'ls -l' was considered an executable command
@@ -615,7 +615,7 @@ def test_smart_command_empty_or_comment_lines(runner, mock_ai_prompts, mock_run_
 
 def test_smart_command_ai_error(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_nl_to_shell'].side_effect = Exception("AI failure")
-    result = runner.invoke(cli, ["smart", "something", "--execute"])
+    result = runner.invoke(cli, ["ask", "something", "--execute"])
     assert result.exit_code == 1
-    assert "An unexpected error occurred during smart command generation/execution: AI failure" in result.output
+    assert "An unexpected error occurred during ask command generation/execution: AI failure" in result.output
     mock_run_cmd.assert_not_called()

@@ -611,7 +611,7 @@ def cmd_admin_check(command):
         sys.exit(1)
 
 
-@cli.command("smart")
+@cli.command("ask")
 @click.argument("nl", type=str)
 @click.option("--execute", is_flag=True, help="Execute the generated command(s) after confirmation")
 def cmd_smart(nl, execute):
@@ -652,5 +652,5 @@ def cmd_smart(nl, execute):
         elif execute:
             click.echo("No executable candidate commands detected automatically. Please run manually if desired.")
     except Exception as e:
-        click.echo(f"An unexpected error occurred during smart command generation/execution: {e}")
+        click.echo(f"An unexpected error occurred during ask command generation/execution: {e}")
         sys.exit(1)
