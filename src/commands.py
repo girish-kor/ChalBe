@@ -46,7 +46,7 @@ def cmd_config():
         sys.exit(1)
 
 
-@cli.command("ls-intel")
+@cli.command("list")
 @click.option("--intent", "-i", help="Describe what you want to see (e.g., 'python files modified today')", required=True)
 @click.option("--cwd", "-C", default=".", help="Directory to run in")
 @click.option("--yes", is_flag=True, help="Execute the suggested command without confirmation")

@@ -88,13 +88,13 @@ def test_config_command_error(runner):
 
 def test_config_missing_exits(runner, mock_load_env):
     mock_load_env.return_value = (None, None, None)
-    result = runner.invoke(cli, ["ls-intel", "-i", "some intent"])
+    result = runner.invoke(cli, ["list", "-i", "some intent"])
     assert result.exit_code == 1
     assert "Error: Missing configuration." in result.output
 
 def test_ls_intel_command_success(runner, mock_ai_prompts, mock_confirm_and_run, mock_load_env):
     mock_ai_prompts['ai_suggest_navigation'].return_value = "ls -l"
-    result = runner.invoke(cli, ["ls-intel", "-i", "list all files"], input='y\n')
+    result = runner.invoke(cli, ["list", "-i", "list all files"], input='y\n')
     assert result.exit_code == 0
     assert "Suggested command:\nls -l" in result.output
     mock_ai_prompts['ai_suggest_navigation'].assert_called_once()
@@ -102,14 +102,14 @@ def test_ls_intel_command_success(runner, mock_ai_prompts, mock_confirm_and_run,
 
 def test_ls_intel_command_no_suggestion(runner, mock_ai_prompts, mock_confirm_and_run):
     mock_ai_prompts['ai_suggest_navigation'].return_value = None
-    result = runner.invoke(cli, ["ls-intel", "-i", "list all files"])
+    result = runner.invoke(cli, ["list", "-i", "list all files"])
     assert result.exit_code == 0
     assert "Error: AI could not suggest a command." in result.output
     mock_confirm_and_run.assert_not_called()
 
 def test_ls_intel_command_yes_flag(runner, mock_ai_prompts, mock_confirm_and_run):
     mock_ai_prompts['ai_suggest_navigation'].return_value = "ls -l"
-    result = runner.invoke(cli, ["ls-intel", "-i", "list all files", "--yes"])
+    result = runner.invoke(cli, ["list", "-i", "list all files", "--yes"])
     assert result.exit_code == 0
     mock_confirm_and_run.assert_called_once_with("ls -l", yes=True)
 

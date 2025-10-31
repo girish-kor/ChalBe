@@ -4,48 +4,26 @@
 
 Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
-## commands
+## Here's a list of the commands and their short descriptions
 
-**config**: Configures ChalBe (the CLI tool's name) with your AI provider, model, and API key.
-
-**ls-intel**: Generates and executes a shell command to list files based on your natural language intent.
-
-**touch**: Creates an empty file, similar to the standard touch command, with an option to create parent directories.
-
-**delete**: Safely removes a file or directory with confirmation before execution.
-
-**copy**: Copies a file or directory, with an option for recursive copying.
-
-**move**: Moves or renames a file or directory.
-
-**show**: Displays file content, with options to show specific head/tail lines or use AI to summarize the content.
-
-**ps-aux**: Lists running processes, with an option to ask AI to analyze the process list.
-
-**nikal**: Kills a process by its PID, with confirmation and an option for SIGKILL.
-
-**perfix**: Explains a filesystem permission error and suggests a fix using AI.
-
-**install**: Gets AI advice on installing a software package and can optionally attempt installation using apt.
-
-**run**: Executes a script, with an option for AI to predict its runtime behavior and side-effects beforehand.
-
-**find**: Finds files or directories using a natural language description, generating and executing a find command.
-
-**net**: Runs basic network diagnostics (ping, curl) and gets AI-powered advice based on the output.
-
-**envhint**: Suggests environment variables needed for an application or task based on context provided in natural language.
-
-**git**: Generates a conventional commit message for staged Git changes using AI.
-
-**sysinfo**: Generates a system report (uname, disk usage, memory) and provides AI-powered advice.
-
-**zip**: Compresses files/directories using tar, with an option to ask AI for the best compression approach.
-
-**schedule**: Creates a cron job from a natural language description and can optionally install it for the current user.
-
-**sudo**: Analyzes a potentially dangerous command with AI before running it with sudo.
-
-**ask**: Translates a natural language instruction into a shell command using AI, with an option to execute the generated command(s) after confirmation.
-
-This CLI aims to enhance terminal productivity by integrating AI for understanding natural language, providing explanations, generating commands, and offering proactive advice.
+- **`chal config`**: Configures ChalBe (the CLI tool) with your chosen AI provider, model, and API key.
+- **`chal list`**: Generates and executes a shell command to list files based on your natural language intent (e.g., "python files modified today").
+- **`chal touch <path>`**: Creates an empty file, similar to the standard `touch` command.
+- **`chal delete <path>`**: Safely removes a file or directory with confirmation.
+- **`chal copy <src> <dst>`**: Copies a file or directory.
+- **`chal move <src> <dst>`**: Moves or renames a file or directory.
+- **`chal show <path>`**: Displays file content, with options for showing specific lines (head/tail) or AI-powered summarization.
+- **`chal ps-aux`**: Lists running processes, with an option for AI analysis of the processes.
+- **`chal nikal <pid>`**: Kills a process by its PID, with confirmation.
+- **`chal perfix <error_text>`**: Explains a filesystem permission error and suggests a fix using AI.
+- **`chal install <pkg>`**: Gets AI advice on installing a software package and offers to run `apt` install.
+- **`chal run <script_path>`**: Executes a script, with an option for AI to predict its behavior and side-effects first.
+- **`chal find-nl <intent>`**: Finds files or directories using a natural language description, suggesting and executing a `find` command.
+- **`chal net --target <host_or_url>`**: Runs basic network diagnostics (ping, curl) and gets AI-powered advice.
+- **`chal envhint <context>`**: Suggests environment variables needed for an application or task using AI.
+- **`chal git`**: Generates a conventional commit message for staged git changes using AI.
+- **`chal sysinfo`**: Generates a system report (uname, df, free) and provides AI-powered advice.
+- **`chal zip <sources...> <dest>`**: Compresses files, with an option for AI advice on the best compression approach.
+- **`chal schedule <nl>`**: Creates a cron job from a natural language description and offers to install it.
+- **`chal sudo <command>`**: Analyzes a potentially dangerous command with AI before running it with `sudo`.
+- **`chal ask <nl>`**: Translates a natural language instruction into a shell command(s) using AI and optionally executes them.
