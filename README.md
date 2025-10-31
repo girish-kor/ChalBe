@@ -13,7 +13,7 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 - **`chal copy <src> <dst>`**: Copies a file or directory.
 - **`chal move <src> <dst>`**: Moves or renames a file or directory.
 - **`chal show <path>`**: Displays file content, with options for showing specific lines (head/tail) or AI-powered summarization.
-- **`chal ps-aux`**: Lists running processes, with an option for AI analysis of the processes.
+- **`chal dekh`**: Lists running processes, with an option for AI analysis of the processes.
 - **`chal nikal <pid>`**: Kills a process by its PID, with confirmation.
 - **`chal perfix <error_text>`**: Explains a filesystem permission error and suggests a fix using AI.
 - **`chal install <pkg>`**: Gets AI advice on installing a software package and offers to run `apt` install.

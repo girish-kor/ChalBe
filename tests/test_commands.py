@@ -265,7 +265,7 @@ def test_view_command_not_a_file(runner, tmp_path):
 
 def test_ps_aux_command_success(runner, mock_run_cmd):
     mock_run_cmd.return_value = (0, "PID USER COMMAND\n1 root init\n", "")
-    result = runner.invoke(cli, ["ps-aux"])
+    result = runner.invoke(cli, ["dekh"])
     assert result.exit_code == 0
     assert "PID USER COMMAND" in result.output
     assert "1 root init" in result.output
@@ -274,7 +274,7 @@ def test_ps_aux_command_success(runner, mock_run_cmd):
 def test_ps_aux_command_analyze(runner, mock_run_cmd, mock_ai_prompts):
     mock_run_cmd.return_value = (0, "PID USER COMMAND\n1 root init\n", "")
     mock_ai_prompts['ai_analyze_processes'].return_value = "AI analysis of processes."
-    result = runner.invoke(cli, ["ps-aux", "--analyze"])
+    result = runner.invoke(cli, ["dekh", "--analyze"])
     assert result.exit_code == 0
     assert "AI analysis of processes." in result.output
     mock_ai_prompts['ai_analyze_processes'].assert_called_once()

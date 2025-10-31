@@ -227,7 +227,7 @@ def cmd_view(path, lines, summarize):
         sys.exit(1)
 
 
-@cli.command("ps-aux")
+@cli.command("dekh")
 @click.option("--analyze", is_flag=True, help="Ask AI to analyze processes")
 def cmd_ps_aux(analyze):
     """Lists running processes, with an option for AI analysis."""
