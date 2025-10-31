@@ -22,11 +22,11 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **ps-aux**: Lists running processes, with an option to ask AI to analyze the process list.
 
-**kill**: Kills a process by its PID, with confirmation and an option for SIGKILL.
+**nikal**: Kills a process by its PID, with confirmation and an option for SIGKILL.
 
 **perfix**: Explains a filesystem permission error and suggests a fix using AI.
 
-**pkg-install**: Gets AI advice on installing a software package and can optionally attempt installation using apt.
+**install**: Gets AI advice on installing a software package and can optionally attempt installation using apt.
 
 **run**: Executes a script, with an option for AI to predict its runtime behavior and side-effects beforehand.
 

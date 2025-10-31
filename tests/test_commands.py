@@ -281,27 +281,27 @@ def test_ps_aux_command_analyze(runner, mock_run_cmd, mock_ai_prompts):
 
 def test_kill_command_success(runner, mock_run_cmd):
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["kill", "123"])
+        result = runner.invoke(cli, ["nikal", "123"])
         assert result.exit_code == 0
         assert "Process 123 signaled successfully." in result.output
-        mock_run_cmd.assert_called_once_with("kill  123", capture=True)
+        mock_run_cmd.assert_called_once_with("nikal  123", capture=True)
 
 def test_kill_command_force(runner, mock_run_cmd):
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["kill", "123", "-9"])
+        result = runner.invoke(cli, ["nikal", "123", "-9"])
         assert result.exit_code == 0
         assert "Process 123 signaled successfully." in result.output
-        mock_run_cmd.assert_called_once_with("kill -9 123", capture=True)
+        mock_run_cmd.assert_called_once_with("nikal -9 123", capture=True)
 
 def test_kill_command_yes_flag(runner, mock_run_cmd):
-    result = runner.invoke(cli, ["kill", "123", "--yes"])
+    result = runner.invoke(cli, ["nikal", "123", "--yes"])
     assert result.exit_code == 0
     assert "Process 123 signaled successfully." in result.output
-    mock_run_cmd.assert_called_once_with("kill  123", capture=True)
+    mock_run_cmd.assert_called_once_with("nikal  123", capture=True)
 
 def test_kill_command_aborted(runner, mock_run_cmd):
     with patch('click.confirm', return_value=False):
-        result = runner.invoke(cli, ["kill", "123"])
+        result = runner.invoke(cli, ["nikal", "123"])
         assert result.exit_code == 0
         assert "Aborted." in result.output
         mock_run_cmd.assert_not_called()
@@ -316,7 +316,7 @@ def test_explain_perm_command_success(runner, mock_ai_prompts):
 def test_pkg_install_command_advice_only(runner, mock_ai_prompts, mock_shutil_which, mock_run_cmd):
     mock_shutil_which.return_value = None # Simulate no apt
     mock_ai_prompts['ai_package_advice'].return_value = "Install advice from AI."
-    result = runner.invoke(cli, ["pkg-install", "mypackage"])
+    result = runner.invoke(cli, ["install", "mypackage"])
     assert result.exit_code == 0
     assert "--- AI Package Advice ---" in result.output
     assert "Install advice from AI." in result.output
@@ -329,7 +329,7 @@ def test_pkg_install_command_with_apt_success(runner, mock_ai_prompts, mock_shut
     mock_ai_prompts['ai_package_advice'].return_value = "Install advice from AI."
     mock_run_cmd.side_effect = [(0, "", ""), (0, "", "")] # Simulate update then install success
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["pkg-install", "mypackage"])
+        result = runner.invoke(cli, ["install", "mypackage"])
         assert result.exit_code == 0
         assert "Install advice from AI." in result.output
         assert "Package 'mypackage' installed successfully." in result.output

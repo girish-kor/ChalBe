@@ -253,14 +253,14 @@ def cmd_ps_aux(analyze):
         sys.exit(1)
 
 
-@cli.command("kill")
+@cli.command("nikal")
 @click.argument("pid", type=int)
 @click.option("--force", "-9", "sig", flag_value="-9", default=None, help="Use SIGKILL")
 @click.option("--yes", is_flag=True, help="Don't ask for confirmation")
 def cmd_kill(pid, sig, yes):
     """Kills a process by its PID, with confirmation."""
     signal = sig or ""
-    cmd = f"kill {signal} {pid}"
+    cmd = f"nikal {signal} {pid}"
     if not yes and not click.confirm(f"Run: {cmd}?"):
         click.echo("Aborted.")
         return
@@ -292,7 +292,7 @@ def cmd_explain_perm(error_text):
         sys.exit(1)
 
 
-@cli.command("pkg-install")
+@cli.command("install")
 @click.argument("pkg", type=str)
 def cmd_pkg_install(pkg):
     """Gets AI advice on installing a software package."""
