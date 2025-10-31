@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chalbe"
+version = "0.1.0"
+authors = [
+  { name="Girish Kor", email="author@example.com" },
+]
+description = "AI-powered command-line interface for terminal automation and natural language command execution."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: System :: Shells",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "click",
+    "python-dotenv",
+    "openai",
+    "google-generativeai",
+    "anthropic",
+    "mistralai",
+    "cohere",
+    "huggingface-hub",
+    "replicate",
+    "together",
+    "boto3",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/girish-kor/chalbe"
+"Bug Tracker" = "https://github.com/girish-kor/chalbe/issues"
+
+[project.scripts]
+chalbe = "src.main:main"
+
+[project.optional-dependencies]
+all = [
+    "openai",
+    "google-generativeai",
+    "anthropic",
+    "mistralai",
+    "cohere",
+    "huggingface-hub",
+    "replicate",
+    "together",
+    "boto3",
+]
+openai = ["openai"]
+google = ["google-generativeai"]
+anthropic = ["anthropic"]
+mistral = ["mistralai"]
+cohere = ["cohere"]
+huggingface = ["huggingface-hub"]
+replicate = ["replicate"]
+together = ["together"]
+aws = ["boto3"]

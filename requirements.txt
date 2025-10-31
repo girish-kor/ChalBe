@@ -1,0 +1,11 @@
+click
+python-dotenv
+openai
+google-generativeai
+anthropic
+mistralai
+cohere
+huggingface-hub
+replicate
+together
+boto3
