@@ -36,13 +36,13 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **env-suggest**: Suggests environment variables needed for an application or task based on context provided in natural language.
 
-**git-msg**: Generates a conventional commit message for staged Git changes using AI.
+**git**: Generates a conventional commit message for staged Git changes using AI.
 
 **sys-report**: Generates a system report (uname, disk usage, memory) and provides AI-powered advice.
 
 **compress**: Compresses files/directories using tar, with an option to ask AI for the best compression approach.
 
-**cron-from-nl**: Creates a cron job from a natural language description and can optionally install it for the current user.
+**schedule**: Creates a cron job from a natural language description and can optionally install it for the current user.
 
 **admin-check**: Analyzes a potentially dangerous command with AI before running it with sudo.
 

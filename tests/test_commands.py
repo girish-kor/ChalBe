@@ -421,7 +421,7 @@ def test_env_suggest_command_success(runner, mock_ai_prompts):
 def test_git_msg_command_success(runner, mock_run_cmd, mock_ai_prompts):
     mock_run_cmd.return_value = (0, "M file1.txt\nM file2.py\ndiff ...", "")
     mock_ai_prompts['ai_git_commit_message'].return_value = "feat: Add new features"
-    result = runner.invoke(cli, ["git-msg"])
+    result = runner.invoke(cli, ["git"])
     assert result.exit_code == 0
     assert "--- Suggested commit message ---" in result.output
     assert "feat: Add new features" in result.output
@@ -430,7 +430,7 @@ def test_git_msg_command_success(runner, mock_run_cmd, mock_ai_prompts):
 
 def test_git_msg_command_no_staged_changes(runner, mock_run_cmd):
     mock_run_cmd.return_value = (0, "", "") # No diff output
-    result = runner.invoke(cli, ["git-msg"])
+    result = runner.invoke(cli, ["git"])
     assert result.exit_code == 0
     assert "No staged changes found to generate a commit message." in result.output
     mock_run_cmd.assert_called_once() # Still runs the diff command
@@ -510,7 +510,7 @@ def test_cron_from_nl_command_success(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_cron_from_nl'].return_value = "0 0 * * * /usr/local/bin/backup.sh"
     mock_run_cmd.return_value = (0, "", "") # crontab update success
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["cron-from-nl", "run backup script daily at midnight"])
+        result = runner.invoke(cli, ["schedule", "run backup script daily at midnight"])
         assert result.exit_code == 0
         assert "Suggested Cron line:" in result.output
         assert "0 0 * * * /usr/local/bin/backup.sh" in result.output
@@ -520,7 +520,7 @@ def test_cron_from_nl_command_success(runner, mock_ai_prompts, mock_run_cmd):
 
 def test_cron_from_nl_command_no_suggestion(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_cron_from_nl'].return_value = None
-    result = runner.invoke(cli, ["cron-from-nl", "run backup script daily at midnight"])
+    result = runner.invoke(cli, ["schedule", "run backup script daily at midnight"])
     assert result.exit_code == 0
     assert "Error: AI could not generate a cron line" in result.output
     mock_run_cmd.assert_not_called()
@@ -528,7 +528,7 @@ def test_cron_from_nl_command_no_suggestion(runner, mock_ai_prompts, mock_run_cm
 def test_cron_from_nl_command_install_aborted(runner, mock_ai_prompts, mock_run_cmd):
     mock_ai_prompts['ai_cron_from_nl'].return_value = "0 0 * * * /usr/local/bin/backup.sh"
     with patch('click.confirm', return_value=False):
-        result = runner.invoke(cli, ["cron-from-nl", "run backup script daily at midnight"])
+        result = runner.invoke(cli, ["schedule", "run backup script daily at midnight"])
         assert result.exit_code == 0
         assert "Suggested Cron line:" in result.output
         assert "Crontab updated successfully." not in result.output # Ensure it's not run

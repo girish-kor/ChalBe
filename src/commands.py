@@ -442,7 +442,7 @@ def cmd_env_suggest(context):
         sys.exit(1)
 
 
-@cli.command("git-msg")
+@cli.command("git")
 def cmd_git_msg():
     """Generates a conventional commit message for staged git changes."""
     try:
@@ -554,7 +554,7 @@ def cmd_compress(sources, dest, advice, yes):
             sys.exit(1)
 
 
-@cli.command("cron-from-nl")
+@cli.command("schedule")
 @click.argument("nl", type=str)
 def cmd_cron_from_nl(nl):
     """Creates a cron job from a natural language description."""
