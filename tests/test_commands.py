@@ -149,7 +149,7 @@ def test_rm_safe_command_success(runner, tmp_path, mock_run_cmd):
     test_file.touch()
     # Mock click.confirm to return True for removal
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["rm-safe", str(test_file)])
+        result = runner.invoke(cli, ["delete", str(test_file)])
         assert result.exit_code == 0
         assert f"Removed {test_file} successfully." in result.output
         mock_run_cmd.assert_called_once_with(f"rm -rf -- '{str(test_file)}'", capture=True)
@@ -158,7 +158,7 @@ def test_rm_safe_command_aborted(runner, tmp_path, mock_run_cmd):
     test_file = tmp_path / "file_to_remove.txt"
     test_file.touch()
     with patch('click.confirm', return_value=False):
-        result = runner.invoke(cli, ["rm-safe", str(test_file)])
+        result = runner.invoke(cli, ["delete", str(test_file)])
         assert result.exit_code == 0
         assert "Aborted." in result.output
         mock_run_cmd.assert_not_called()
@@ -166,7 +166,7 @@ def test_rm_safe_command_aborted(runner, tmp_path, mock_run_cmd):
 def test_rm_safe_command_yes_flag(runner, tmp_path, mock_run_cmd):
     test_file = tmp_path / "file_to_remove.txt"
     test_file.touch()
-    result = runner.invoke(cli, ["rm-safe", str(test_file), "--yes"])
+    result = runner.invoke(cli, ["delete", str(test_file), "--yes"])
     assert result.exit_code == 0
     assert f"Removed {test_file} successfully." in result.output
     mock_run_cmd.assert_called_once_with(f"rm -rf -- '{str(test_file)}'", capture=True)
@@ -176,7 +176,7 @@ def test_rm_safe_command_run_cmd_failure(runner, tmp_path, mock_run_cmd):
     test_file.touch()
     mock_run_cmd.return_value = (1, "", "rm error")
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["rm-safe", str(test_file)])
+        result = runner.invoke(cli, ["delete", str(test_file)])
         assert result.exit_code == 1
         assert f"Error removing {test_file}: rm error" in result.output
 
@@ -184,22 +184,22 @@ def test_cp_command_file_success(runner, tmp_path, mock_run_cmd):
     src_file = tmp_path / "src.txt"
     src_file.touch()
     dst_file = tmp_path / "dst.txt"
-    result = runner.invoke(cli, ["cp", str(src_file), str(dst_file)])
+    result = runner.invoke(cli, ["copy", str(src_file), str(dst_file)])
     assert result.exit_code == 0
     assert f"Copied {src_file} -> {dst_file} successfully." in result.output
-    mock_run_cmd.assert_called_once_with(f"cp -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
+    mock_run_cmd.assert_called_once_with(f"copy -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
 
 def test_cp_command_recursive_success(runner, tmp_path, mock_run_cmd):
     src_dir = tmp_path / "src_dir"
     src_dir.mkdir()
     dst_dir = tmp_path / "dst_dir"
-    result = runner.invoke(cli, ["cp", "-r", str(src_dir), str(dst_dir)])
+    result = runner.invoke(cli, ["copy", "-r", str(src_dir), str(dst_dir)])
     assert result.exit_code == 0
     assert f"Copied {src_dir} -> {dst_dir} successfully." in result.output
-    mock_run_cmd.assert_called_once_with(f"cp -r -- '{str(src_dir)}' '{str(dst_dir)}'", capture=True)
+    mock_run_cmd.assert_called_once_with(f"copy -r -- '{str(src_dir)}' '{str(dst_dir)}'", capture=True)
 
 def test_cp_command_source_not_found(runner, tmp_path):
-    result = runner.invoke(cli, ["cp", str(tmp_path / "non_existent.txt"), str(tmp_path / "dst.txt")])
+    result = runner.invoke(cli, ["copy", str(tmp_path / "non_existent.txt"), str(tmp_path / "dst.txt")])
     assert result.exit_code == 1
     assert "Error: Source 'non_existent.txt' not found." in result.output
 
@@ -207,13 +207,13 @@ def test_mv_command_success(runner, tmp_path, mock_run_cmd):
     src_file = tmp_path / "old_name.txt"
     src_file.touch()
     dst_file = tmp_path / "new_name.txt"
-    result = runner.invoke(cli, ["mv", str(src_file), str(dst_file)])
+    result = runner.invoke(cli, ["move", str(src_file), str(dst_file)])
     assert result.exit_code == 0
     assert f"Moved {src_file} -> {dst_file} successfully." in result.output
-    mock_run_cmd.assert_called_once_with(f"mv -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
+    mock_run_cmd.assert_called_once_with(f"move -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
 
 def test_mv_command_source_not_found(runner, tmp_path):
-    result = runner.invoke(cli, ["mv", str(tmp_path / "non_existent.txt"), str(tmp_path / "dst.txt")])
+    result = runner.invoke(cli, ["move", str(tmp_path / "non_existent.txt"), str(tmp_path / "dst.txt")])
     assert result.exit_code == 1
     assert "Error: Source 'non_existent.txt' not found." in result.output
 
@@ -221,7 +221,7 @@ def test_view_command_cat_success(runner, tmp_path, mock_run_cmd):
     test_file = tmp_path / "test.txt"
     test_file.write_text("Hello World")
     mock_run_cmd.return_value = (0, "Hello World", "")
-    result = runner.invoke(cli, ["view", str(test_file)])
+    result = runner.invoke(cli, ["show", str(test_file)])
     assert result.exit_code == 0
     assert "Hello World" in result.output
     mock_run_cmd.assert_called_once_with(f"cat '{str(test_file)}'", capture=True)
@@ -230,7 +230,7 @@ def test_view_command_head_success(runner, tmp_path, mock_run_cmd):
     test_file = tmp_path / "test.txt"
     test_file.write_text("Line 1\nLine 2\nLine 3")
     mock_run_cmd.return_value = (0, "Line 1\nLine 2", "")
-    result = runner.invoke(cli, ["view", str(test_file), "-n", "2"])
+    result = runner.invoke(cli, ["show", str(test_file), "-n", "2"])
     assert result.exit_code == 0
     assert "Line 1\nLine 2" in result.output
     mock_run_cmd.assert_called_once_with(f"head -n 2 '{str(test_file)}'", capture=True)
@@ -239,7 +239,7 @@ def test_view_command_tail_success(runner, tmp_path, mock_run_cmd):
     test_file = tmp_path / "test.txt"
     test_file.write_text("Line 1\nLine 2\nLine 3")
     mock_run_cmd.return_value = (0, "Line 2\nLine 3", "")
-    result = runner.invoke(cli, ["view", str(test_file), "-n", "-2"])
+    result = runner.invoke(cli, ["show", str(test_file), "-n", "-2"])
     assert result.exit_code == 0
     assert "Line 2\nLine 3" in result.output
     mock_run_cmd.assert_called_once_with(f"tail -n 2 '{str(test_file)}'", capture=True)
@@ -249,7 +249,7 @@ def test_view_command_summarize_success(runner, tmp_path, mock_run_cmd, mock_ai_
     test_file.write_text("Long content for summarization.")
     mock_run_cmd.return_value = (0, "Long content for summarization.", "")
     mock_ai_prompts['ai_summarize_text'].return_value = "AI summary here."
-    result = runner.invoke(cli, ["view", str(test_file), "--summarize"])
+    result = runner.invoke(cli, ["show", str(test_file), "--summarize"])
     assert result.exit_code == 0
     assert "Long content for summarization." in result.output
     assert "--- Summary ---" in result.output
@@ -259,7 +259,7 @@ def test_view_command_summarize_success(runner, tmp_path, mock_run_cmd, mock_ai_
 def test_view_command_not_a_file(runner, tmp_path):
     test_dir = tmp_path / "test_dir"
     test_dir.mkdir()
-    result = runner.invoke(cli, ["view", str(test_dir)])
+    result = runner.invoke(cli, ["show", str(test_dir)])
     assert result.exit_code == 1
     assert f"Error: '{test_dir}' is not a file." in result.output
 
@@ -466,7 +466,7 @@ def test_sys_report_command_partial_success(runner, mock_run_cmd, mock_ai_prompt
 
 
 def test_compress_command_no_sources(runner):
-    result = runner.invoke(cli, ["compress", "output.tar.gz"])
+    result = runner.invoke(cli, ["zip", "output.tar.gz"])
     assert result.exit_code == 1
     assert "Error: No source files/directories provided" in result.output
 
@@ -476,7 +476,7 @@ def test_compress_command_success_no_advice(runner, tmp_path, mock_run_cmd):
     dest = tmp_path / "archive.tar.gz"
     mock_run_cmd.return_value = (0, "", "")
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["compress", str(src1), str(dest)])
+        result = runner.invoke(cli, ["zip", str(src1), str(dest)])
         assert result.exit_code == 0
         assert f"Proposed command: tar -czf '{str(dest)}' '{str(src1)}'" in result.output
         assert f"Compression to {dest} completed successfully." in result.output
@@ -489,7 +489,7 @@ def test_compress_command_with_advice(runner, tmp_path, mock_run_cmd, mock_ai_pr
     mock_ai_prompts['ai_compression_advice'].return_value = "Use tar.gz for this."
     mock_run_cmd.return_value = (0, "", "")
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["compress", str(src1), str(dest), "--advice"])
+        result = runner.invoke(cli, ["zip", str(src1), str(dest), "--advice"])
         assert result.exit_code == 0
         assert "--- AI Compression Advice ---" in result.output
         assert "Use tar.gz for this." in result.output
@@ -501,7 +501,7 @@ def test_compress_command_yes_flag(runner, tmp_path, mock_run_cmd):
     src1.touch()
     dest = tmp_path / "archive.tar.gz"
     mock_run_cmd.return_value = (0, "", "")
-    result = runner.invoke(cli, ["compress", str(src1), str(dest), "--yes"])
+    result = runner.invoke(cli, ["zip", str(src1), str(dest), "--yes"])
     assert result.exit_code == 0
     assert f"Compression to {dest} completed successfully." in result.output
     mock_run_cmd.assert_called_once() # Should run without confirmation

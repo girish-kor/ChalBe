@@ -12,13 +12,13 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **touch**: Creates an empty file, similar to the standard touch command, with an option to create parent directories.
 
-**rm-safe**: Safely removes a file or directory with confirmation before execution.
+**delete**: Safely removes a file or directory with confirmation before execution.
 
-**cp**: Copies a file or directory, with an option for recursive copying.
+**copy**: Copies a file or directory, with an option for recursive copying.
 
-**mv**: Moves or renames a file or directory.
+**move**: Moves or renames a file or directory.
 
-**view**: Displays file content, with options to show specific head/tail lines or use AI to summarize the content.
+**show**: Displays file content, with options to show specific head/tail lines or use AI to summarize the content.
 
 **ps-aux**: Lists running processes, with an option to ask AI to analyze the process list.
 
@@ -40,7 +40,7 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **sysinfo**: Generates a system report (uname, disk usage, memory) and provides AI-powered advice.
 
-**compress**: Compresses files/directories using tar, with an option to ask AI for the best compression approach.
+**zip**: Compresses files/directories using tar, with an option to ask AI for the best compression approach.
 
 **schedule**: Creates a cron job from a natural language description and can optionally install it for the current user.
 

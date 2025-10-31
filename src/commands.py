@@ -91,7 +91,7 @@ def cmd_touch(path, create_parents):
         sys.exit(1)
 
 
-@cli.command("rm-safe")
+@cli.command("delete")
 @click.argument("path", type=click.Path(exists=True))
 @click.option("--yes", is_flag=True, help="Remove without confirmation")
 def cmd_rm(path, yes):
@@ -113,7 +113,7 @@ def cmd_rm(path, yes):
         sys.exit(1)
 
 
-@cli.command("cp")
+@cli.command("copy")
 @click.argument("src", type=click.Path())
 @click.argument("dst", type=click.Path())
 @click.option("--recursive", "-r", is_flag=True, help="Recursive copy")
@@ -127,9 +127,9 @@ def cmd_cp(src, dst, recursive):
             sys.exit(1)
 
         if recursive:
-            cmd = f"cp -r -- {shlex.quote(src)} {shlex.quote(dst)}"
+            cmd = f"copy -r -- {shlex.quote(src)} {shlex.quote(dst)}"
         else:
-            cmd = f"cp -- {shlex.quote(src)} {shlex.quote(dst)}"
+            cmd = f"copy -- {shlex.quote(src)} {shlex.quote(dst)}"
         rc, out, err = run_cmd(cmd, capture=True)
         if rc == 0:
             click.echo(f"Copied {src} -> {dst} successfully.")
@@ -144,7 +144,7 @@ def cmd_cp(src, dst, recursive):
         sys.exit(1)
 
 
-@cli.command("mv")
+@cli.command("move")
 @click.argument("src", type=click.Path())
 @click.argument("dst", type=click.Path())
 def cmd_mv(src, dst):
@@ -155,7 +155,7 @@ def cmd_mv(src, dst):
             click.echo(f"Error: Source '{s.name}' not found.")
             sys.exit(1)
 
-        cmd = f"mv -- {shlex.quote(src)} {shlex.quote(dst)}"
+        cmd = f"move -- {shlex.quote(src)} {shlex.quote(dst)}"
         rc, out, err = run_cmd(cmd, capture=True)
         if rc == 0:
             click.echo(f"Moved {src} -> {dst} successfully.")
@@ -170,7 +170,7 @@ def cmd_mv(src, dst):
         sys.exit(1)
 
 
-@cli.command("view")
+@cli.command("show")
 @click.argument("path", type=click.Path(exists=True))
 @click.option("--lines", "-n", type=int, default=None, help="Show head/tail lines (positive=head, negative=tail)")
 @click.option("--summarize", "-s", is_flag=True, help="Use AI to summarize file contents")
@@ -515,11 +515,11 @@ def cmd_sys_report():
         sys.exit(1)
 
 
-@cli.command("compress")
+@cli.command("zip")
 @click.argument("sources", nargs=-1, type=click.Path())
 @click.argument("dest", type=click.Path())
 @click.option("--advice", is_flag=True, help="Ask AI for best compression approach")
-@click.option("--yes", is_flag=True, help="Run compress without asking")
+@click.option("--yes", is_flag=True, help="Run zip without asking")
 def cmd_compress(sources, dest, advice, yes):
     """Compresses files, with an option for AI advice on the best format."""
     if not sources:
