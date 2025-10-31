@@ -30,7 +30,7 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 
 **run**: Executes a script, with an option for AI to predict its runtime behavior and side-effects beforehand.
 
-**find-nl**: Finds files or directories using a natural language description, generating and executing a find command.
+**find**: Finds files or directories using a natural language description, generating and executing a find command.
 
 **net**: Runs basic network diagnostics (ping, curl) and gets AI-powered advice based on the output.
 
@@ -49,5 +49,3 @@ Stop memorizing arcane flags and syntax. Just tell ChalBe what you want to do.
 **ask**: Translates a natural language instruction into a shell command using AI, with an option to execute the generated command(s) after confirmation.
 
 This CLI aims to enhance terminal productivity by integrating AI for understanding natural language, providing explanations, generating commands, and offering proactive advice.
-
-# ChalBe

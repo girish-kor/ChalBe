@@ -371,7 +371,7 @@ def test_run_script_command_yes_flag(runner, tmp_path, mock_run_cmd):
 
 def test_find_nl_command_success(runner, mock_ai_prompts, mock_confirm_and_run):
     mock_ai_prompts['ai_find_command'].return_value = "find . -name '*.py'"
-    result = runner.invoke(cli, ["find-nl", "all python files"], input='y\n')
+    result = runner.invoke(cli, ["find", "all python files"], input='y\n')
     assert result.exit_code == 0
     assert "Suggested:\nfind . -name '*.py'" in result.output
     mock_ai_prompts['ai_find_command'].assert_called_once()
@@ -379,7 +379,7 @@ def test_find_nl_command_success(runner, mock_ai_prompts, mock_confirm_and_run):
 
 def test_find_nl_command_yes_flag(runner, mock_ai_prompts, mock_confirm_and_run):
     mock_ai_prompts['ai_find_command'].return_value = "find . -name '*.py'"
-    result = runner.invoke(cli, ["find-nl", "all python files", "--yes"])
+    result = runner.invoke(cli, ["find", "all python files", "--yes"])
     assert result.exit_code == 0
     mock_confirm_and_run.assert_called_once_with("find . -name '*.py'", yes=True)
 

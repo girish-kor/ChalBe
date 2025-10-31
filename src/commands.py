@@ -368,7 +368,7 @@ def cmd_run_script(script_path, predict, yes):
             sys.exit(1)
 
 
-@cli.command("find-nl")
+@cli.command("find")
 @click.argument("intent", type=str)
 @click.option("--root", "-C", default=".", help="Root directory")
 @click.option("--yes", is_flag=True, help="Run suggested command without confirmation")
