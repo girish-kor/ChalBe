@@ -7,7 +7,7 @@ except ImportError:
     OpenAIClient = None
 
 try:
-    from google import genai as google_genai
+    import google.generativeai as google_genai
 except ImportError:
     google_genai = None
 

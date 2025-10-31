@@ -187,7 +187,7 @@ def test_cp_command_file_success(runner, tmp_path, mock_run_cmd):
     result = runner.invoke(cli, ["copy", str(src_file), str(dst_file)])
     assert result.exit_code == 0
     assert f"Copied {src_file} -> {dst_file} successfully." in result.output
-    mock_run_cmd.assert_called_once_with(f"copy -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
+    mock_run_cmd.assert_called_once_with(f"cp -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
 
 def test_cp_command_recursive_success(runner, tmp_path, mock_run_cmd):
     src_dir = tmp_path / "src_dir"
@@ -196,7 +196,7 @@ def test_cp_command_recursive_success(runner, tmp_path, mock_run_cmd):
     result = runner.invoke(cli, ["copy", "-r", str(src_dir), str(dst_dir)])
     assert result.exit_code == 0
     assert f"Copied {src_dir} -> {dst_dir} successfully." in result.output
-    mock_run_cmd.assert_called_once_with(f"copy -r -- '{str(src_dir)}' '{str(dst_dir)}'", capture=True)
+    mock_run_cmd.assert_called_once_with(f"cp -r -- '{str(src_dir)}' '{str(dst_dir)}'", capture=True)
 
 def test_cp_command_source_not_found(runner, tmp_path):
     result = runner.invoke(cli, ["copy", str(tmp_path / "non_existent.txt"), str(tmp_path / "dst.txt")])
@@ -210,7 +210,7 @@ def test_mv_command_success(runner, tmp_path, mock_run_cmd):
     result = runner.invoke(cli, ["move", str(src_file), str(dst_file)])
     assert result.exit_code == 0
     assert f"Moved {src_file} -> {dst_file} successfully." in result.output
-    mock_run_cmd.assert_called_once_with(f"move -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
+    mock_run_cmd.assert_called_once_with(f"mv -- '{str(src_file)}' '{str(dst_file)}'", capture=True)
 
 def test_mv_command_source_not_found(runner, tmp_path):
     result = runner.invoke(cli, ["move", str(tmp_path / "non_existent.txt"), str(tmp_path / "dst.txt")])
@@ -281,27 +281,27 @@ def test_ps_aux_command_analyze(runner, mock_run_cmd, mock_ai_prompts):
 
 def test_kill_command_success(runner, mock_run_cmd):
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["nikal", "123"])
+        result = runner.invoke(cli, ["kill", "123"])
         assert result.exit_code == 0
         assert "Process 123 signaled successfully." in result.output
-        mock_run_cmd.assert_called_once_with("nikal  123", capture=True)
+        mock_run_cmd.assert_called_once_with("kill  123", capture=True)
 
 def test_kill_command_force(runner, mock_run_cmd):
     with patch('click.confirm', return_value=True):
-        result = runner.invoke(cli, ["nikal", "123", "-9"])
+        result = runner.invoke(cli, ["kill", "123", "-9"])
         assert result.exit_code == 0
         assert "Process 123 signaled successfully." in result.output
-        mock_run_cmd.assert_called_once_with("nikal -9 123", capture=True)
+        mock_run_cmd.assert_called_once_with("kill -9 123", capture=True)
 
 def test_kill_command_yes_flag(runner, mock_run_cmd):
-    result = runner.invoke(cli, ["nikal", "123", "--yes"])
+    result = runner.invoke(cli, ["kill", "123", "--yes"])
     assert result.exit_code == 0
     assert "Process 123 signaled successfully." in result.output
-    mock_run_cmd.assert_called_once_with("nikal  123", capture=True)
+    mock_run_cmd.assert_called_once_with("kill  123", capture=True)
 
 def test_kill_command_aborted(runner, mock_run_cmd):
     with patch('click.confirm', return_value=False):
-        result = runner.invoke(cli, ["nikal", "123"])
+        result = runner.invoke(cli, ["kill", "123"])
         assert result.exit_code == 0
         assert "Aborted." in result.output
         mock_run_cmd.assert_not_called()

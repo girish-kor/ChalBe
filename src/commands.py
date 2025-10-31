@@ -127,9 +127,9 @@ def cmd_cp(src, dst, recursive):
             sys.exit(1)
 
         if recursive:
-            cmd = f"copy -r -- {shlex.quote(src)} {shlex.quote(dst)}"
+            cmd = f"cp -r -- {shlex.quote(src)} {shlex.quote(dst)}"
         else:
-            cmd = f"copy -- {shlex.quote(src)} {shlex.quote(dst)}"
+            cmd = f"cp -- {shlex.quote(src)} {shlex.quote(dst)}"
         rc, out, err = run_cmd(cmd, capture=True)
         if rc == 0:
             click.echo(f"Copied {src} -> {dst} successfully.")
@@ -155,7 +155,7 @@ def cmd_mv(src, dst):
             click.echo(f"Error: Source '{s.name}' not found.")
             sys.exit(1)
 
-        cmd = f"move -- {shlex.quote(src)} {shlex.quote(dst)}"
+        cmd = f"mv -- {shlex.quote(src)} {shlex.quote(dst)}"
         rc, out, err = run_cmd(cmd, capture=True)
         if rc == 0:
             click.echo(f"Moved {src} -> {dst} successfully.")
@@ -253,14 +253,14 @@ def cmd_ps_aux(analyze):
         sys.exit(1)
 
 
-@cli.command("nikal")
+@cli.command("kill")
 @click.argument("pid", type=int)
 @click.option("--force", "-9", "sig", flag_value="-9", default=None, help="Use SIGKILL")
 @click.option("--yes", is_flag=True, help="Don't ask for confirmation")
 def cmd_kill(pid, sig, yes):
     """Kills a process by its PID, with confirmation."""
     signal = sig or ""
-    cmd = f"nikal {signal} {pid}"
+    cmd = f"kill {signal} {pid}"
     if not yes and not click.confirm(f"Run: {cmd}?"):
         click.echo("Aborted.")
         return
